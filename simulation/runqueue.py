@@ -1,6 +1,7 @@
 from simulation.tasks import Task
 from typing import Optional
 
+
 class RunQueue:
     tasks: list[Task]
     _iter_indices: dict[int, int]
@@ -23,8 +24,11 @@ class RunQueue:
         ]
 
     def peek_n_tasks(self, n: int) -> list[Task]:
-        n = min(n, len(self.tasks))
+        # n = min(n, len(self.tasks))
         return self.tasks[:n]
+
+    def pop_specific_task(self, task: Task):
+        self.tasks.remove(task)
 
     def peek_four(self) -> list[Task]:
         return self.tasks[:4]
@@ -46,6 +50,9 @@ class RunQueue:
         return [self.tasks[0]]
 
     def pop_task(self) -> list[Task]:
+        if self._last_index > 0:
+            self._last_index -= 1
+
         return [self.tasks.pop(0)]
 
     def is_empty(self) -> bool:
@@ -58,6 +65,14 @@ class RunQueue:
             4: 0,
         }
         self._prev_index = 0
+        self._last_index = 0
+
+    def peek_next(self) -> Optional[Task]:
+        if self._last_index >= len(self.tasks):
+            return None
+        task = self.tasks[self._last_index]
+        self._last_index += 1
+        return task
 
     def _peek_prev_with_size(self, size: int) -> Optional[Task]:
         if self._iter_indices[size] == len(self.tasks):
@@ -76,7 +91,7 @@ class RunQueue:
         if self._prev_index == len(self.tasks):
             return None
 
-        last = self.tasks[len(self.tasks) -1 - self._prev_index]
+        last = self.tasks[len(self.tasks) - 1 - self._prev_index]
         self._prev_index += 1
         return last
 
@@ -91,4 +106,3 @@ class RunQueue:
 
     def __len__(self):
         return len(self.tasks)
-

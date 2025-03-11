@@ -1,6 +1,6 @@
 import os
 
-N_THREADS = int(os.getenv("N_THREADS", 8))
+N_THREADS = int(os.getenv("N_THREADS", 4))
 
 type TimeQuantum = int
 

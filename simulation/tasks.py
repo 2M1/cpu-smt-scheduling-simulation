@@ -24,6 +24,12 @@ class InstructionType(Enum):
     CTRL = auto()  # control instructions of the CPU
     NOP = auto()
 
+    def is_vsx(self) -> bool:
+        return self in (InstructionType.VSU, InstructionType.CRYPTO, InstructionType.DFU)
+
+    def is_fx(self) -> bool:
+        return self in (InstructionType.FX, InstructionType.NOP)
+
 
 @dataclass
 class Instruction:
@@ -103,11 +109,11 @@ class BranchInstruction(Instruction):
 
 
 class TaskCategory(Enum):
-    VSU_CRYPTO_DFU = TaskCategoryCharacteristics(1.0)
+    VSU_CRYPTO_DFU = TaskCategoryCharacteristics(1.0, 2)
     VSU_QUAD_WORD = TaskCategoryCharacteristics(1.0, 2)
-    LSU = TaskCategoryCharacteristics(1.0)
+    LSU = TaskCategoryCharacteristics(1.0, 2)
     BRANCH = TaskCategoryCharacteristics(1.0)
-    FX = TaskCategoryCharacteristics(1.0)
+    FX = TaskCategoryCharacteristics(1.0, 2)
 
 
 colors = colormaps['tab20c']
@@ -115,6 +121,9 @@ colors = colormaps['tab20c']
 
 def get_task_color(task_id: int, total_tasks: int) -> str:
     return colors(float(task_id) / total_tasks)
+
+
+TOTAL_TASKS = 7
 
 
 @dataclass
@@ -134,7 +143,7 @@ class Task:
     completed_at: TimeQuantum = -1
 
     def __post_init__(self):
-        self.colour = get_task_color(self.id, N_THREADS)
+        self.colour = get_task_color(self.id, TOTAL_TASKS)
         print(
             f"Task {self.id} has colour {self.colour}"
         )

@@ -1,7 +1,5 @@
-from dataclasses import dataclass, field
 from typing import Callable, Iterator
 
-from main import SMT_MAX
 from simulation.state import ProcessorState
 from simulation.tasks import Task, InstructionType
 from simulation.runqueue import RunQueue
@@ -38,7 +36,12 @@ def run_simulation_to_exhaustion(
     while not run_queue.is_empty():
         scheduled_tasks = scheduling_algorithm(run_queue)
         quantum_smt = len(scheduled_tasks)
-        assert quantum_smt in (1, 2, 4)
+        print(f"quantum {quantum} smt {quantum_smt}")
+        for task in scheduled_tasks:
+            task.instructions.pop(0)
+            if len(task.instructions) == 0:
+                print(f"completed task {task.id} at quantum {quantum}")
+                task.mark_completed(quantum)
 
         run_order[quantum] = scheduled_tasks
 
