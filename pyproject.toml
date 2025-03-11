@@ -1,0 +1,10 @@
+[project]
+version = "2025-03-11"
+authors = [
+    { name = "Markus Mielimonka", email="mmi.github@gmail.com" },
+]
+license = "MIT"
+
+dependencies = [
+    "matplotlib",
+]

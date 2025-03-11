@@ -135,6 +135,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.python-version
 
 # Spyder project settings
 .spyderproject
@@ -249,3 +250,5 @@ fabric.properties
 
 # PyPI configuration file
 .pypirc
+
+.DS_Store
